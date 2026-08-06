@@ -73,10 +73,10 @@ a {
 
 .text-display-xl {
   font-family: var(--font-display);
-  font-size: clamp(3.5rem, 8.5vw, 8.5rem);
+  font-size: clamp(3rem, 6.8vw, 7.5rem);
   font-weight: 500;
-  line-height: 0.88;
-  letter-spacing: -0.045em;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
 }
 
 .text-display-lg {
@@ -84,7 +84,7 @@ a {
   font-size: clamp(2.65rem, 5vw, 5.25rem);
   font-weight: 500;
   line-height: 0.98;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.015em;
 }
 
 .text-body-lg {

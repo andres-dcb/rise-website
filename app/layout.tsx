@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { DM_Serif_Display, Manrope } from "next/font/google";
 import "@/styles/globals.css";
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider";
 
-const display = Cormorant_Garamond({
+const display = DM_Serif_Display({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
-  weight: ["500", "600"],
+  weight: "400",
 });
 
 const sans = Manrope({

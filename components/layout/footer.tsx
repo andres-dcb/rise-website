@@ -3,24 +3,40 @@ import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 
 const links = [
-  ["Kitchen", "/kitchen"],
-  ["Bathroom", "/bathroom"],
-  ["Portfolio", "/portfolio"],
-  ["Financing", "/financing"],
-  ["About", "/about"],
-  ["FAQ", "/faq"],
+  ["What We Transform", "/#what-we-transform"],
+  ["Our Work", "/#our-work"],
+  ["Why Choose RISE", "/#about"],
+  ["Our Process", "/#process"],
+  ["Financing", "/#financing"],
+  ["FAQ", "/#faq"],
+  ["Get a Free Estimate", "/#contact"],
 ] as const;
 
 export function Footer() {
   return (
-    <footer className="bg-charcoal py-16 text-ivory md:py-20">
+    <footer className="border-t border-ivory/8 bg-[#171717] py-14 text-ivory md:py-16">
       <Container>
-        <div className="grid gap-12 border-b border-ivory/12 pb-14 md:grid-cols-2 lg:grid-cols-[1.4fr_0.7fr_1fr]">
+        <div className="grid gap-14 border-b border-ivory/10 pb-12 md:grid-cols-2 lg:grid-cols-[1.55fr_0.65fr_1fr]">
           <div>
-            <p className="font-display text-4xl">RISE</p>
-            <p className="mt-4 max-w-md text-sm leading-7 text-ivory/62">
-              Constructed to Last. Designed to Impress.
-            </p>
+            <Link
+  href="/#main-content"
+  aria-label="Return to the top of the homepage"
+  className="inline-flex items-center gap-4 transition-colors duration-300 hover:text-gold"
+>
+  <span className="font-display text-4xl">RISE</span>
+
+  <span className="border-l border-ivory/15 pl-4 text-[11px] uppercase tracking-[0.14em] text-ivory/55">
+    Remodeling &<br />
+    Renovations
+  </span>
+</Link>
+            <p className="mt-4 max-w-md text-sm leading-7 text-gold">
+  Constructed to Last. Designed to Impress.
+</p>
+
+<p className="mt-6 max-w-sm text-sm leading-7 text-ivory/62">
+  Beautiful kitchens and bathrooms, designed around the way you live.
+</p>
           </div>
 
           <nav aria-label="Footer">
@@ -53,17 +69,17 @@ export function Footer() {
               (210) 383-2159
             </a>
             <a
-              className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-gold"
-              href="https://maps.google.com/?q=4372+N+Loop+1604+W+Suite+104-D+Shavano+Park+TX+78249"
-              target="_blank"
-              rel="noreferrer"
-            >
+  className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-gold"
+  href="https://maps.app.goo.gl/RSdZH5QU8UbLf6KZ6"
+  target="_blank"
+  rel="noopener noreferrer"
+>
               Get Directions <ArrowUpRight className="size-4" aria-hidden="true" />
             </a>
           </address>
         </div>
 
-        <div className="flex flex-col gap-3 pt-7 text-xs text-ivory/48 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 pt-6 text-xs text-ivory/48 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} RISE Remodeling & Renovations.</p>
           <p>Serving Greater San Antonio.</p>
         </div>
