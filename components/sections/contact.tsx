@@ -122,10 +122,10 @@ export function Contact() {
 
   return (
     <section
-      ref={sectionRef}
-      id="contact"
-      className="overflow-hidden bg-charcoal py-24 text-ivory sm:py-28 lg:py-36"
-    >
+  ref={sectionRef}
+  id="contact"
+  className="scroll-mt-24 overflow-hidden bg-charcoal py-24 text-ivory sm:py-28 lg:py-36"
+>
       <Container>
         <div className="grid gap-16 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24">
           <div className="lg:pt-6">

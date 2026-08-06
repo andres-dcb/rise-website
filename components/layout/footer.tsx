@@ -108,10 +108,34 @@ export function Footer() {
           </address>
         </div>
 
-        <div className="flex flex-col gap-3 pt-6 text-xs text-ivory/48 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} RISE Remodeling & Renovations.</p>
-          <p>Serving Greater San Antonio.</p>
-        </div>
+        <div className="flex flex-col gap-5 pt-6 text-xs text-ivory/48 lg:flex-row lg:items-center lg:justify-between">
+  <p>© {new Date().getFullYear()} RISE Remodeling & Renovations.</p>
+
+  <nav
+    aria-label="Legal"
+    className="flex flex-wrap items-center gap-x-5 gap-y-3"
+  >
+    <Link
+      href="/privacy"
+      className="transition-colors duration-300 hover:text-gold"
+    >
+      Privacy Policy
+    </Link>
+
+    <span className="text-ivory/20" aria-hidden="true">
+      |
+    </span>
+
+    <Link
+      href="/terms"
+      className="transition-colors duration-300 hover:text-gold"
+    >
+      Terms of Service
+    </Link>
+  </nav>
+
+  <p>Serving Greater San Antonio.</p>
+</div>
       </Container>
     </footer>
   );
