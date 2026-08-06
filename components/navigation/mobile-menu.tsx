@@ -1,7 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { Dispatch, SetStateAction, useLayoutEffect, useRef } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useLayoutEffect,
+  useRef,
+} from "react";
 import gsap from "gsap";
 
 import { ButtonLink } from "@/components/ui/button";
@@ -27,270 +32,230 @@ export function MobileMenu({
   const navRef = useRef<HTMLElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
 
-useLayoutEffect(() => {
-  if (
-    !panelRef.current ||
-    !backdropRef.current ||
-    !navRef.current ||
-    !footerRef.current
-  ) {
-    return;
-  }
+  useLayoutEffect(() => {
+    if (
+      !panelRef.current ||
+      !backdropRef.current ||
+      !navRef.current ||
+      !footerRef.current
+    ) {
+      return;
+    }
 
-  const panel = panelRef.current;
-  const backdrop = backdropRef.current;
-  const menuItems = Array.from(navRef.current.children);
-  const footer = footerRef.current;
-  if (!open) {
-  gsap.set(backdrop, {
-    opacity: 0,
-  });
+    const panel = panelRef.current;
+    const backdrop = backdropRef.current;
+    const menuItems = Array.from(navRef.current.children);
+    const footer = footerRef.current;
 
-  gsap.set(panel, {
-    opacity: 0,
-    y: -20,
-  });
+    gsap.killTweensOf([panel, backdrop, menuItems, footer]);
 
-  gsap.set(menuItems, {
-    opacity: 0,
-    y: 20,
-  });
+    if (!open) {
+      gsap.set(backdrop, {
+        opacity: 0,
+      });
 
-  gsap.set(footer, {
-    opacity: 0,
-    y: 20,
-  });
+      gsap.set(panel, {
+        opacity: 0,
+        y: -18,
+      });
 
-  return;
-}
+      gsap.set(menuItems, {
+        opacity: 0,
+        y: 16,
+      });
 
-  gsap.killTweensOf([panel, backdrop, menuItems, footer]);
+      gsap.set(footer, {
+        opacity: 0,
+        y: 14,
+      });
 
-  if (open) {
+      return;
+    }
+
     gsap.set(backdrop, {
       opacity: 0,
     });
 
     gsap.set(panel, {
       opacity: 0,
-      y: -24,
+      y: -20,
     });
 
     gsap.set(menuItems, {
       opacity: 0,
-      y: 20,
+      y: 16,
     });
 
     gsap.set(footer, {
       opacity: 0,
-      y: 16,
+      y: 14,
     });
 
-    const tl = gsap.timeline();
+    const timeline = gsap.timeline();
 
-    tl.to(backdrop, {
-      opacity: 1,
-      duration: 0.25,
-      ease: "power2.out",
-    })
-
+    timeline
+      .to(backdrop, {
+        opacity: 1,
+        duration: 0.22,
+        ease: "power2.out",
+      })
       .to(
         panel,
         {
           opacity: 1,
           y: 0,
-          duration: 0.55,
+          duration: 0.45,
           ease: "power3.out",
         },
-        0
+        0,
       )
-
       .to(
         menuItems,
         {
           opacity: 1,
           y: 0,
-          stagger: 0.08,
-          duration: 0.4,
+          stagger: 0.055,
+          duration: 0.32,
           ease: "power3.out",
         },
-        "-=0.25"
+        "-=0.2",
       )
-
       .to(
         footer,
         {
           opacity: 1,
           y: 0,
-          duration: 0.35,
+          duration: 0.3,
           ease: "power3.out",
         },
-        "-=0.2"
+        "-=0.12",
       );
-  } else {
-    const tl = gsap.timeline();
 
-    tl.to(footer, {
-      opacity: 0,
-      y: 12,
-      duration: 0.15,
-    })
+    return () => {
+      timeline.kill();
+    };
+  }, [open]);
 
-      .to(
-        menuItems,
-        {
-          opacity: 0,
-          y: 16,
-          stagger: -0.04,
-          duration: 0.15,
-        },
-        0
-      )
-
-      .to(
-        panel,
-        {
-          opacity: 0,
-          y: -18,
-          duration: 0.28,
-          ease: "power2.in",
-        },
-        0.08
-      )
-
-      .to(
-        backdrop,
-        {
-          opacity: 0,
-          duration: 0.18,
-        },
-        0.08
-      );
+  function closeMenu() {
+    setOpen(false);
   }
-}, [open]);
 
   return (
-    <>
+    <div
+      id="mobile-navigation"
+      className={cn(
+        "fixed inset-0 z-40 min-[1180px]:hidden",
+        open
+          ? "pointer-events-auto visible"
+          : "pointer-events-none invisible",
+      )}
+    >
+      {/* Background overlay */}
       <div
-  id="mobile-navigation"
-className={cn(
-  "fixed inset-0 z-40 min-[1180px]:hidden",
-  open
-    ? "pointer-events-auto visible"
-    : "pointer-events-none invisible"
-)}
->
-  {/* Background overlay */}
-  <div
-  ref={backdropRef}
-  className="absolute inset-0 bg-black/25 backdrop-blur-sm"
-/>
+        ref={backdropRef}
+        className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+        onClick={closeMenu}
+        aria-hidden="true"
+      />
 
-  {/* Floating panel */}
-  <div
-  ref={panelRef}
-  className="
-absolute
-left-0
-right-0
-top-header
-mx-3
-h-[78svh]
-min-h-[620px]
-max-h-[760px]
-overflow-hidden
-rounded-b-[42px]
-border
-border-white/10
-bg-charcoal/95
-backdrop-blur-xl
-shadow-[0_30px_90px_rgba(0,0,0,0.45)]
-"
->
-    <Container className="flex h-full flex-col justify-between pt-8 pb-10">
-
-      {/* Navigation */}
-      <nav
-  ref={navRef}
-  className="mx-auto flex w-full max-w-xl flex-col"
-  aria-label="Mobile"
->
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            onClick={() => setOpen(false)}
-            className="group border-b border-white/8 py-7"
+      {/* Menu panel */}
+      <div
+        ref={panelRef}
+        className="
+          absolute
+          inset-x-3
+          top-header
+          max-h-[calc(100svh-6.5rem)]
+          overflow-y-auto
+          rounded-b-[32px]
+          border
+          border-white/10
+          bg-charcoal/95
+          shadow-[0_24px_70px_rgba(0,0,0,0.42)]
+          backdrop-blur-xl
+        "
+      >
+        <Container className="flex flex-col px-6 pb-7 pt-5 sm:px-8">
+          {/* Navigation */}
+          <nav
+            ref={navRef}
+            className="flex w-full flex-col"
+            aria-label="Mobile"
           >
-            <span className="flex items-center justify-between">
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={closeMenu}
+                className="group border-b border-white/8 py-5"
+              >
+                <span className="flex items-center justify-between gap-5">
+                  <span
+                    className="
+                      font-display
+                      text-[2rem]
+                      leading-[1.05]
+                      tracking-[-0.02em]
+                      text-ivory
+                      transition-all
+                      duration-300
+                      group-hover:translate-x-1
+                      group-hover:text-gold
+                      sm:text-[2.2rem]
+                    "
+                  >
+                    {link.label}
+                  </span>
 
-<span
-  className="
-  font-display
-  text-[2.5rem]
-  leading-none
-  tracking-tight
-  text-ivory
-  transition-all
-  duration-300
-  group-hover:translate-x-2
-  group-hover:text-gold
-  "
->
-                {link.label}
-              </span>
+                  <span
+                    className="
+                      h-px
+                      w-0
+                      shrink-0
+                      bg-gold
+                      transition-all
+                      duration-300
+                      group-hover:w-8
+                    "
+                  />
+                </span>
+              </Link>
+            ))}
+          </nav>
 
-              <span
-                className="
-                h-px
-                w-0
-                bg-gold
-                transition-all
+          {/* Footer */}
+          <div
+            ref={footerRef}
+            className="mt-6 w-full text-ivory"
+          >
+            <p className="mb-3 text-xs uppercase leading-5 tracking-[0.18em] text-ivory/50">
+              Let&apos;s build something exceptional.
+            </p>
+
+            <a
+              href="tel:+12103832159"
+              className="
+                inline-block
+                text-xl
+                font-light
+                transition-colors
                 duration-300
-                group-hover:w-10
-                "
-              />
-            </span>
-          </Link>
-        ))}
-      </nav>
+                hover:text-gold
+              "
+            >
+              (210) 383-2159
+            </a>
 
-      {/* Footer */}
-      <div
-  ref={footerRef}
-  className="mx-auto w-full max-w-xl text-ivory"
->
-
-        <p className="mb-5 text-sm uppercase tracking-[0.18em] text-ivory/45">
-        Let&apos;s build something exceptional.
-        </p>
-
-        <a
-  href="tel:+12103832159"
-  className="
-inline-block
-text-2xl
-font-light
-transition-colors
-duration-300
-hover:text-gold
-"
->
-          (210) 383-2159
-        </a>
-
-        <ButtonLink
-          href="/contact"
-          className="mt-8 w-full"
-        >
-          Get a Free Estimate
-        </ButtonLink>
-
+            <ButtonLink
+              href="/#contact"
+              onClick={closeMenu}
+              className="mt-5 w-full"
+            >
+              Get a Free Estimate
+            </ButtonLink>
+          </div>
+        </Container>
       </div>
-
-    </Container>
-  </div>
-</div>
-    </>
+    </div>
   );
 }

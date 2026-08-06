@@ -53,9 +53,9 @@ return (
       )}
     >
 <Link
-  href="/"
+  href="#main-content"
   className="group inline-flex items-center gap-3 transition-transform duration-300 ease-out hover:-translate-y-[2px]"
-  aria-label="RISE Remodeling & Renovations home"
+  aria-label="Return to the top of the homepage"
 >
           <span className="font-display text-2xl leading-none font-semibold tracking-[0.12em] transition-all duration-500">
             RISE

@@ -19,7 +19,7 @@ export function Footer() {
         <div className="grid gap-14 border-b border-ivory/10 pb-12 md:grid-cols-2 lg:grid-cols-[1.55fr_0.65fr_1fr]">
           <div>
             <Link
-  href="/#main-content"
+  href="#main-content"
   aria-label="Return to the top of the homepage"
   className="inline-flex items-center gap-4 transition-colors duration-300 hover:text-gold"
 >
