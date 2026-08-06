@@ -23,67 +23,66 @@ export function FAQ() {
   const rowsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const elements = [
-        eyebrowRef.current,
-        titleRef.current,
-        descriptionRef.current,
-        ...rowsRef.current,
-      ];
+  const media = gsap.matchMedia();
 
-      elements.forEach((element, index) => {
-        if (!element) return;
+  const ctx = gsap.context(() => {
+    const elements = [
+      eyebrowRef.current,
+      titleRef.current,
+      descriptionRef.current,
+      ...rowsRef.current,
+    ];
 
-        const isRow = index >= 3;
+    elements.forEach((element, index) => {
+      if (!element) return;
 
-        gsap.set(element, {
-          opacity: 0,
-          y: isRow ? 24 : 36,
-        });
+      const isRow = index >= 3;
 
-        gsap.to(element, {
-          opacity: 1,
-          y: 0,
-          duration: 0.9,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: element,
-            start: "top 90%",
-            end: "top 70%",
-            scrub: 1.1,
-          },
-        });
+      gsap.set(element, {
+        opacity: 0,
+        y: isRow ? 24 : 36,
       });
 
-      const pinTrigger = ScrollTrigger.matchMedia({
-        "(min-width: 1024px)": () => {
-          if (
-            !gridRef.current ||
-            !leftColumnRef.current ||
-            !rightColumnRef.current
-          ) {
-            return;
-          }
-
-          ScrollTrigger.create({
-            trigger: gridRef.current,
-            pin: leftColumnRef.current,
-            start: "top top+=128",
-            endTrigger: rightColumnRef.current,
-            end: "bottom bottom-=128",
-            pinSpacing: false,
-            invalidateOnRefresh: true,
-          });
+      gsap.to(element, {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: element,
+          start: "top 90%",
+          end: "top 70%",
+          scrub: 1.1,
         },
       });
+    });
 
-      return () => {
-        pinTrigger.revert();
-      };
-    }, sectionRef);
+    media.add("(min-width: 1024px)", () => {
+      if (
+        !gridRef.current ||
+        !leftColumnRef.current ||
+        !rightColumnRef.current
+      ) {
+        return;
+      }
 
-    return () => ctx.revert();
-  }, []);
+      ScrollTrigger.create({
+        trigger: gridRef.current,
+        pin: leftColumnRef.current,
+        start: "top top+=128",
+        endTrigger: rightColumnRef.current,
+        end: "bottom bottom-=128",
+        pinSpacing: false,
+        invalidateOnRefresh: true,
+      });
+    });
+  }, sectionRef);
+
+  return () => {
+    media.revert();
+    ctx.revert();
+  };
+}, []);
 
   return (
     <section
