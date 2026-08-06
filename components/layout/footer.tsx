@@ -34,7 +34,7 @@ export function Footer() {
   Constructed to Last. Designed to Impress.
 </p>
 
-<p className="mt-6 max-w-sm text-sm leading-7 text-ivory/62">
+<p className="mt-6 max-w-sm text-sm leading-7 text-ivory">
   Beautiful kitchens and bathrooms, designed around the way you live.
 </p>
           </div>
@@ -54,7 +54,7 @@ export function Footer() {
 
           <address className="not-italic">
             <p className="mb-4 text-label text-gold">Visit or Contact</p>
-            <p className="leading-7 text-ivory/72">
+            <p className="leading-7 text-ivory">
               4372 N Loop 1604 W, Suite 104-D
               <br />
               Shavano Park, TX 78249
