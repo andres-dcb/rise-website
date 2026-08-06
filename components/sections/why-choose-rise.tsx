@@ -1,10 +1,10 @@
 "use client";
 
-import { Container } from "@/components/ui/container";
-import { useEffect, useRef } from "react";
-import { fadeUp } from "@/lib/animations/reveal";
+import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+import { Container } from "@/components/ui/container";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,87 +32,107 @@ const values = [
 ];
 
 export function WhyChooseRise() {
+  const sectionRef = useRef<HTMLElement>(null);
   const introRef = useRef<HTMLDivElement>(null);
 
-  const dividerRefs = useRef<HTMLDivElement[]>([]);
-  const titleRefs = useRef<HTMLHeadingElement[]>([]);
-  const paragraphRefs = useRef<HTMLParagraphElement[]>([]);
-  const rowRefs = useRef<HTMLDivElement[]>([]);
+  const dividerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const titleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
+  const paragraphRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  useEffect(() => {
-    if (introRef.current) {
-      fadeUp(introRef.current, {
-        duration: 0.9,
-      });
-    }
+  useLayoutEffect(() => {
+    if (!sectionRef.current) return;
 
-    rowRefs.current.forEach((row, index) => {
-      const divider = dividerRefs.current[index];
-      const title = titleRefs.current[index];
-      const paragraph = paragraphRefs.current[index];
-
-      if (!divider || !title || !paragraph) return;
-
-      gsap.set(divider, {
-        scaleX: 0,
-        transformOrigin: "left center",
-      });
-
-      gsap.set([title, paragraph], {
-        opacity: 0,
-        y: 24,
-      });
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: row,
-          start: "top 82%",
-          once: true,
-        },
-      });
-
-      tl.to(divider, {
-        scaleX: 1,
-        duration: 0.75,
-        ease: "power3.out",
-      })
-        .to(
-          title,
+    const ctx = gsap.context(() => {
+      if (introRef.current) {
+        gsap.fromTo(
+          introRef.current,
           {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "power3.out",
+            autoAlpha: 0,
+            y: 32,
           },
-          "-=0.35"
-        )
-        .to(
-          paragraph,
           {
-            opacity: 1,
+            autoAlpha: 1,
             y: 0,
-            duration: 0.6,
+            duration: 0.9,
             ease: "power3.out",
+            scrollTrigger: {
+              trigger: introRef.current,
+              start: "top 85%",
+              once: true,
+            },
           },
-          "-=0.40"
         );
-    });
+      }
 
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
+      rowRefs.current.forEach((row, index) => {
+        const divider = dividerRefs.current[index];
+        const title = titleRefs.current[index];
+        const paragraph = paragraphRefs.current[index];
+
+        if (!row || !divider || !title || !paragraph) return;
+
+        gsap.set(divider, {
+          scaleX: 0,
+          transformOrigin: "left center",
+        });
+
+        gsap.set([title, paragraph], {
+          opacity: 0,
+          y: 24,
+        });
+
+        const timeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: row,
+            start: "top 82%",
+            once: true,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        timeline
+          .to(divider, {
+            scaleX: 1,
+            duration: 0.75,
+            ease: "power3.out",
+          })
+          .to(
+            title,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              ease: "power3.out",
+            },
+            "-=0.35",
+          )
+          .to(
+            paragraph,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              ease: "power3.out",
+            },
+            "-=0.4",
+          );
+      });
+
+      ScrollTrigger.refresh();
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
     <section
+      ref={sectionRef}
       id="about"
       className="bg-ivory py-36 lg:py-44"
     >
       <Container>
-        <div
-          ref={introRef}
-          className="max-w-3xl"
-        >
+        <div ref={introRef} className="max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-gold">
             Why Choose RISE
           </p>
@@ -133,22 +153,22 @@ export function WhyChooseRise() {
           {values.map((value, index) => (
             <div
               key={value.title}
-              ref={(el) => {
-                if (el) rowRefs.current[index] = el;
+              ref={(element) => {
+                rowRefs.current[index] = element;
               }}
               className="py-12"
             >
               <div
-                ref={(el) => {
-                  if (el) dividerRefs.current[index] = el;
+                ref={(element) => {
+                  dividerRefs.current[index] = element;
                 }}
                 className="h-px w-full bg-charcoal/10"
               />
 
               <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1.4fr]">
                 <h3
-                  ref={(el) => {
-                    if (el) titleRefs.current[index] = el;
+                  ref={(element) => {
+                    titleRefs.current[index] = element;
                   }}
                   className="font-display text-4xl text-charcoal"
                 >
@@ -156,8 +176,8 @@ export function WhyChooseRise() {
                 </h3>
 
                 <p
-                  ref={(el) => {
-                    if (el) paragraphRefs.current[index] = el;
+                  ref={(element) => {
+                    paragraphRefs.current[index] = element;
                   }}
                   className="max-w-2xl text-lg leading-relaxed text-charcoal/70"
                 >
