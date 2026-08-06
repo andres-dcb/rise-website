@@ -1,5 +1,10 @@
 import Link, { type LinkProps } from "next/link";
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
+import {
+  forwardRef,
+  type AnchorHTMLAttributes,
+  type ButtonHTMLAttributes,
+} from "react";
+
 import { cn } from "@/lib/cn";
 
 type Variant = "primary" | "secondary" | "text";
@@ -20,15 +25,23 @@ const styles = {
   },
 };
 
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: Variant;
+  size?: Size;
+};
+
+type ButtonLinkProps = LinkProps &
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps> & {
+    variant?: Variant;
+    size?: Size;
+  };
+
 export function Button({
   className,
   variant = "primary",
   size = "md",
   ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: Variant;
-  size?: Size;
-}) {
+}: ButtonProps) {
   return (
     <button
       className={cn(
@@ -42,25 +55,27 @@ export function Button({
   );
 }
 
-export function ButtonLink({
-  className,
-  variant = "primary",
-  size = "md",
-  ...props
-}: LinkProps &
-  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps> & {
-    variant?: Variant;
-    size?: Size;
-  }) {
-  return (
-    <Link
-      className={cn(
-        styles.base,
-        styles.variants[variant],
-        styles.sizes[size],
-        className,
-      )}
-      {...props}
-    />
-  );
-}
+export const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(
+  function ButtonLink(
+    {
+      className,
+      variant = "primary",
+      size = "md",
+      ...props
+    },
+    ref,
+  ) {
+    return (
+      <Link
+        ref={ref}
+        className={cn(
+          styles.base,
+          styles.variants[variant],
+          styles.sizes[size],
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+);
