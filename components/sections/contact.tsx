@@ -205,7 +205,7 @@ export function Contact() {
                   htmlFor="contact-name"
                   className="text-sm font-semibold text-charcoal"
                 >
-                  Name
+                  Name <span className="text-gold">*</span>
                 </label>
 
                 <input
@@ -224,7 +224,7 @@ export function Contact() {
                   htmlFor="contact-phone"
                   className="text-sm font-semibold text-charcoal"
                 >
-                  Phone
+                  Phone <span className="text-gold">*</span>
                 </label>
 
                 <input
@@ -243,7 +243,7 @@ export function Contact() {
                   htmlFor="contact-email"
                   className="text-sm font-semibold text-charcoal"
                 >
-                  Email
+                  Email <span className="text-gold">*</span>
                 </label>
 
                 <input
@@ -262,7 +262,7 @@ export function Contact() {
                   htmlFor="contact-project-type"
                   className="text-sm font-semibold text-charcoal"
                 >
-                  Project Type
+                  Project Type <span className="text-gold">*</span>
                 </label>
 
                 <select
@@ -289,7 +289,8 @@ export function Contact() {
                 htmlFor="contact-message"
                 className="text-sm font-semibold text-charcoal"
               >
-                Tell Us About Your Project
+                Tell Us About Your Project{" "}
+                <span className="text-gold">*</span>
               </label>
 
               <textarea

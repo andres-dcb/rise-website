@@ -1,11 +1,10 @@
 "use client";
 
 import { useLayoutEffect, useRef } from "react";
-import { Container } from "@/components/ui/container";
-import { ButtonLink } from "@/components/ui/button";
-import { fadeUp } from "@/lib/animations/reveal";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+import { Container } from "@/components/ui/container";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,102 +32,125 @@ const features = [
 ];
 
 export function Financing() {
-const eyebrowRef = useRef<HTMLParagraphElement>(null);
-const titleRef = useRef<HTMLHeadingElement>(null);
-const textRef = useRef<HTMLParagraphElement>(null);
-const buttonRef = useRef<HTMLAnchorElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const eyebrowRef = useRef<HTMLParagraphElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLAnchorElement>(null);
+  const cardsRef = useRef<(HTMLElement | null)[]>([]);
 
-const cardsRef = useRef<(HTMLElement | null)[]>([]);
-const sectionRef = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const elements = [
+        eyebrowRef.current,
+        titleRef.current,
+        textRef.current,
+        buttonRef.current,
+        ...cardsRef.current,
+      ];
 
-useLayoutEffect(() => {
-  const ctx = gsap.context(() => {
-    const elements = [
-      eyebrowRef.current,
-      titleRef.current,
-      textRef.current,
-      buttonRef.current,
-      ...cardsRef.current,
-    ];
+      elements.forEach((element, index) => {
+        if (!element) return;
 
-    elements.forEach((element, index) => {
-      if (!element) return;
+        const isCard = index >= 4;
 
-      const isCard = index >= 4;
+        gsap.set(element, {
+          opacity: 0,
+          y: isCard ? 28 : 36,
+          scale: isCard ? 0.98 : 1,
+        });
 
-gsap.set(element, {
-  opacity: 0,
-  y: isCard ? 28 : 36,
-  scale: isCard ? 0.98 : 1,
-});
+        gsap.to(element, {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.9,
+          ease: "power3.out",
+          delay: index * 0.05,
+          scrollTrigger: {
+            trigger: element,
+            start: "top 90%",
+            end: "top 70%",
+            scrub: 1.15,
+            invalidateOnRefresh: true,
+          },
+        });
+      });
 
-gsap.to(element, {
-  opacity: 1,
-  y: 0,
-  scale: 1,
-  duration: 0.9,
-  ease: "power3.out",
+      ScrollTrigger.refresh();
+    }, sectionRef);
 
-  scrollTrigger: {
-    trigger: element,
-    start: "top 90%",
-    end: "top 70%",
-    scrub: 1.15,
-  },
-
-  delay: index * 0.05,
-});
-    });
-  }, sectionRef);
-
-  return () => ctx.revert();
-}, []);
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
-     ref={sectionRef}
+      ref={sectionRef}
       id="financing"
-      className="bg-ivory py-24 sm:py-28 lg:py-36"
+      className="overflow-hidden bg-ivory py-24 sm:py-28 lg:py-36"
     >
       <Container>
-        <div className="mx-auto max-w-4xl text-center">
+        <div className="text-center">
           <p
-          ref={eyebrowRef}
-          className="text-xs font-semibold uppercase tracking-[0.24em] text-gold">
+            ref={eyebrowRef}
+            className="text-xs font-semibold uppercase tracking-[0.24em] text-gold"
+          >
             Financing
           </p>
 
           <h2
-          ref={titleRef}
-          className="mt-5 text-display-lg text-charcoal">
+            ref={titleRef}
+            className="mx-auto mt-5 max-w-4xl text-display-lg text-charcoal"
+          >
             Make Your Dream Home Possible.
           </h2>
 
-          <p
-          ref={textRef}
-          className="mx-auto mt-6 max-w-2xl text-base leading-8 text-charcoal/70 sm:text-lg">
-            Flexible financing can help you begin your renovation sooner
-            without compromising your vision. Whether you're planning a
-            kitchen remodel, bathroom renovation, or a complete home
-            transformation, we'll help you explore options that fit your
-            goals and budget.
-          </p>
+          <div ref={textRef}>
+  <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-charcoal/70 sm:text-lg">
+    Flexible financing can help you begin your renovation sooner without
+    compromising your vision. Through our preferred financing partner,
+    HFS, you can explore options for kitchen remodels, bathroom
+    renovations, and complete home transformations that fit your goals
+    and budget.
+  </p>
+</div>
 
-          <ButtonLink
-          ref={buttonRef}
-          href="#contact" className="mt-12">
-            Let's Discuss Your Project
-          </ButtonLink>
+          <a
+            ref={buttonRef}
+            href="https://www.hfsfinancial.net/promo/69ce9f75b096b4d505ef344c"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              mt-10
+              inline-flex
+              min-h-11
+              items-center
+              justify-center
+              rounded-full
+              bg-gold
+              px-7
+              text-sm
+              font-semibold
+              text-charcoal
+              shadow-gold
+              transition
+              duration-250
+              hover:-translate-y-0.5
+              hover:bg-gold-light
+            "
+          >
+            Explore Financing Options
+          </a>
         </div>
 
         <div className="mt-16 grid gap-6 md:grid-cols-2">
           {features.map((feature, index) => (
             <article
-  ref={(el) => {
-    cardsRef.current[index] = el;
-  }}
-  key={feature.title}
-  className="
+              ref={(element) => {
+                cardsRef.current[index] = element;
+              }}
+              key={feature.title}
+              className="
                 group
                 relative
                 flex
@@ -145,63 +167,50 @@ gsap.to(element, {
                 transition-all
                 duration-500
                 hover:border-white/20
-hover:shadow-[0_28px_70px_rgba(0,0,0,0.22)]
-hover:bg-[linear-gradient(145deg,#303030_0%,#1E1E1E_55%,#1A1A1A_100%)]
+                hover:bg-[linear-gradient(145deg,#303030_0%,#1E1E1E_55%,#1A1A1A_100%)]
+                hover:shadow-[0_28px_70px_rgba(0,0,0,0.22)]
               "
             >
               {/* Soft highlight */}
-<div
-  className="
-    absolute inset-0
-    bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_62%)]
-    opacity-90
-    transition-opacity
-    duration-500
-    group-hover:opacity-100
-  "
-/>
+              <div
+                className="
+                  pointer-events-none
+                  absolute
+                  inset-0
+                  bg-[radial-gradient(circle_at_20%_10%,rgba(255,255,255,0.09),transparent_38%)]
+                  opacity-70
+                  transition-opacity
+                  duration-500
+                  group-hover:opacity-100
+                "
+                aria-hidden="true"
+              />
 
-{/* Material finish */}
-<div
-  className="
-    pointer-events-none
-    absolute
-    inset-[1px]
-    rounded-[23px]
-    border
-    border-white/[0.04]
-    bg-[linear-gradient(to_bottom,rgba(255,255,255,0.018),rgba(255,255,255,0.008)_18%,transparent_45%)]
-    transition-all
-    duration-700
-    group-hover:border-white/[0.08]
-  "
-/>
+              {/* Material finish */}
+              <div
+                className="
+                  pointer-events-none
+                  absolute
+                  inset-0
+                  bg-[linear-gradient(120deg,transparent_15%,rgba(255,255,255,0.025)_48%,transparent_80%)]
+                "
+                aria-hidden="true"
+              />
 
               <div className="relative -translate-y-4 max-w-sm">
+                <div
+                  className="mx-auto h-px w-16 bg-gold/45"
+                  aria-hidden="true"
+                />
 
-  <div
-    className="
-      mx-auto
-      mb-8
-      h-px
-      w-16
-      bg-gold/35
-      transition-all
-      duration-500
-      group-hover:w-24
-      group-hover:bg-gold
-    "
-  />
+                <h3 className="mt-10 font-display text-4xl leading-tight text-ivory">
+                  {feature.title}
+                </h3>
 
-  <h3 className="font-display text-[2.3rem] font-medium leading-tight text-ivory transition-colors duration-300 group-hover:text-gold">
-    {feature.title}
-  </h3>
-
-  <p className="mt-5 text-base leading-8 text-ivory/70 transition-colors duration-300 group-hover:text-ivory/90">
-    {feature.description}
-  </p>
-
-</div>
+                <p className="mt-6 text-base leading-8 text-ivory/70">
+                  {feature.description}
+                </p>
+              </div>
             </article>
           ))}
         </div>
