@@ -66,7 +66,7 @@ export function Header({ solid = false }: { solid?: boolean }) {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 z-50 h-header border-b transition-[top,background-color,border-color,box-shadow,border-radius] duration-500 ease-out",
+          "fixed inset-x-0 z-50 h-header border-b transition-[background-color,border-color,box-shadow,border-radius] duration-500 ease-out",
           scrolled ? "top-0" : "top-3",
           scrolled
             ? "rounded-b-xl border border-charcoal/6 bg-ivory text-charcoal shadow-[0_14px_44px_rgba(0,0,0,0.11)] backdrop-blur-2xl"
